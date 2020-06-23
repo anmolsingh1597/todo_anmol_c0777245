@@ -204,6 +204,7 @@
             <point key="canvasLocation" x="269.56521739130437" y="128.57142857142856"/>
         </scene>
     </scenes>
+    <color key="tintColor" red="0.088881986590000003" green="0.21694519349999999" blue="0.26583433969999998" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
     <resources>
         <image name="archivebox" catalog="system" width="128" height="106"/>
         <image name="ellipsis" catalog="system" width="128" height="37"/>

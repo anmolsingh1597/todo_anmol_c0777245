@@ -31,6 +31,9 @@ class TasksTableViewController: UITableViewController {
     // create context
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
+     let datePicker = UIDatePicker()
+    var dueDateTextFiled = UITextField()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -64,7 +67,8 @@ class TasksTableViewController: UITableViewController {
         let task = tasks[indexPath.row]
         cell.textLabel?.text = task.title
         cell.detailTextLabel?.text = task.taskDescription
-        
+        cell.textLabel?.textColor = .darkGray
+        cell.detailTextLabel?.textColor = .darkGray
         let backgroundView = UIView()
         backgroundView.backgroundColor = .green
         cell.selectedBackgroundView = backgroundView
@@ -178,28 +182,45 @@ class TasksTableViewController: UITableViewController {
         loadTasks()
     }
 
+    func createDatePicker(){
+        
+      datePicker.datePickerMode = UIDatePicker.Mode.dateAndTime
+
+        let toolbar = UIToolbar()
+        toolbar.sizeToFit()
+        
+        //bar button
+        let doneBtn = UIBarButtonItem(barButtonSystemItem: .done, target: nil, action: #selector(doneBarBtn))
+        toolbar.setItems([doneBtn], animated: true)
+        
+        dueDateTextFiled.inputAccessoryView = toolbar
+        dueDateTextFiled.inputView = datePicker
+    }
+    
+    @objc func doneBarBtn() {
+        print("Done bar utton")
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        formatter.timeStyle = .medium
+        
+        dueDateTextFiled.text = formatter.string(from: datePicker.date)
+        self.view.endEditing(true)
+    }
     
     @IBAction func addTask(_ sender: UIBarButtonItem) {
         
         var titleTextFiled = UITextField()
         var taskDescriptionTextFiled = UITextField()
-        var dueDateTextFiled = UITextField()
         
+    
         let alert = UIAlertController(title: "Add New Task", message: "", preferredStyle: UIAlertController.Style.alert)
         let addAction = UIAlertAction(title: "Add", style: .default) { (action) in
             let taskName = self.tasks.map {$0.title}
-//            let taskDescription = self.tasks.map {$0.description}
-//            let dueDate = self.tasks.map {$0.dueDate}
-            
+
             guard !taskName.contains(titleTextFiled.text) else {
                 return self.showAlert()
             }
-//            let newTask = Tasks(context: self.context)
-//            newTask.title = titleTextFiled.text
-//            newTask.taskDescription = taskDescriptionTextFiled.text
-//            newTask.dueDate = Date()
-//            self.tasks.append(newTask)
-//            self.saveTask()
+
             self.updateTask(with: titleTextFiled.text!, description: taskDescriptionTextFiled.text!, date: Date())
         }
         
@@ -218,8 +239,9 @@ class TasksTableViewController: UITableViewController {
                   taskDescriptionTextFiled.placeholder = "Task Description"
               }
         alert.addTextField { (field) in
-                  dueDateTextFiled = field
-                  dueDateTextFiled.placeholder = "Due Date"
+            self.dueDateTextFiled = field
+            self.dueDateTextFiled.placeholder = "Due Date"
+            self.createDatePicker()
               }
        
               present(alert, animated: true, completion: nil)

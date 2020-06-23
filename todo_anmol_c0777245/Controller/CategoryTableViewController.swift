@@ -52,8 +52,8 @@ class CategoryTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "categoryCell", for: indexPath)
         
         cell.textLabel?.text = categories[indexPath.row].categoryName
-        cell.textLabel?.textColor = .lightGray
-        cell.detailTextLabel?.textColor = .lightGray
+        cell.textLabel?.textColor = .darkGray
+        cell.detailTextLabel?.textColor = .darkGray
         cell.detailTextLabel?.text = "\(categories[indexPath.row].tasks?.count ?? 0)"
         cell.imageView?.image = UIImage(systemName: "folder")
 

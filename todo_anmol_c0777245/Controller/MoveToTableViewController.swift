@@ -30,6 +30,7 @@ class MoveToTableViewController: UITableViewController {
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
+       
     }
     
       func loadCategories() {
@@ -37,9 +38,8 @@ class MoveToTableViewController: UITableViewController {
         let request: NSFetchRequest<Category> = Category.fetchRequest()
               
     // predicate if you want
-              /*
-               write your code here
-               */
+           let categoryPredicate = NSPredicate(format: "NOT categoryName MATCHES %@", selectedTasks?[0].parentCategory?.categoryName ?? "")
+              request.predicate = categoryPredicate
               
             do {
                 categories = try context.fetch(request)
@@ -49,9 +49,12 @@ class MoveToTableViewController: UITableViewController {
             }
         }
 
+    @objc func cancelButton(){
+         dismiss(animated: true, completion: nil)
+    }
     
     @IBAction func dismissViewController(_ sender: UIBarButtonItem) {
-        dismiss(animated: true, completion: nil)
+       
     }
     // MARK: - Table view data source
 
@@ -70,7 +73,6 @@ class MoveToTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "moveToCategoriesCell", for: indexPath)
 
         cell.textLabel?.text = categories[indexPath.row].categoryName
-               cell.backgroundColor = .darkGray
                cell.textLabel?.textColor = .lightGray
                cell.tintColor = .lightText
 
