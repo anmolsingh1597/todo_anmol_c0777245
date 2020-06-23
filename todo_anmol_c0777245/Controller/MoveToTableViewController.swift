@@ -1,5 +1,5 @@
 //
-//  TasksTableViewController.swift
+//  MoveToTableViewController.swift
 //  todo_anmol_c0777245
 //
 //  Created by Anmol singh on 2020-06-23.
@@ -8,13 +8,8 @@
 
 import UIKit
 
-class TasksTableViewController: UITableViewController {
+class MoveToTableViewController: UITableViewController {
 
-    var selectedCategory: Category? {
-        didSet{
-            
-        }
-    }
     override func viewDidLoad() {
         super.viewDidLoad()
 
