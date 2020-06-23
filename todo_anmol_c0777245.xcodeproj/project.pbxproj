@@ -16,6 +16,7 @@
 		8ED4671224A281850055E560 /* CategoryTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ED4671124A281850055E560 /* CategoryTableViewController.swift */; };
 		8ED4671424A284070055E560 /* TasksTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ED4671324A284070055E560 /* TasksTableViewController.swift */; };
 		8ED4671624A286840055E560 /* MoveToTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ED4671524A286840055E560 /* MoveToTableViewController.swift */; };
+		8ED4671924A29A660055E560 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ED4671824A29A660055E560 /* Date+Extension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		8ED4671124A281850055E560 /* CategoryTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryTableViewController.swift; sourceTree = "<group>"; };
 		8ED4671324A284070055E560 /* TasksTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksTableViewController.swift; sourceTree = "<group>"; };
 		8ED4671524A286840055E560 /* MoveToTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveToTableViewController.swift; sourceTree = "<group>"; };
+		8ED4671824A29A660055E560 /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,6 +64,7 @@
 		8ED466F624A280530055E560 /* todo_anmol_c0777245 */ = {
 			isa = PBXGroup;
 			children = (
+				8ED4671724A29A480055E560 /* Extensions */,
 				8ED4671024A280DE0055E560 /* Model */,
 				8ED4670F24A280D40055E560 /* View */,
 				8ED4670E24A280BF0055E560 /* Controller */,
@@ -98,6 +101,14 @@
 				8ED4670024A280530055E560 /* todo_anmol_c0777245.xcdatamodeld */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		8ED4671724A29A480055E560 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				8ED4671824A29A660055E560 /* Date+Extension.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -175,6 +186,7 @@
 				8ED4671624A286840055E560 /* MoveToTableViewController.swift in Sources */,
 				8ED4671424A284070055E560 /* TasksTableViewController.swift in Sources */,
 				8ED466F824A280530055E560 /* AppDelegate.swift in Sources */,
+				8ED4671924A29A660055E560 /* Date+Extension.swift in Sources */,
 				8ED466FA24A280530055E560 /* SceneDelegate.swift in Sources */,
 				8ED4671224A281850055E560 /* CategoryTableViewController.swift in Sources */,
 			);

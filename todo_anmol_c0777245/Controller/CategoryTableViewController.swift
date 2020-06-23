@@ -155,7 +155,7 @@ class CategoryTableViewController: UITableViewController {
     }
     
     func showAlert() {
-         let alert = UIAlertController(title: "Alert", message: "Folder Name Already Exist", preferredStyle: .alert)
+         let alert = UIAlertController(title: "Alert", message: "Category Name already Exist", preferredStyle: .alert)
          let okAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
          okAction.setValue(UIColor.orange, forKey: "titleTextColor")
          alert.addAction(okAction)
