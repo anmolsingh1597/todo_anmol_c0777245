@@ -68,7 +68,7 @@
         <scene sceneID="Wvc-64-0u5">
             <objects>
                 <tableViewController id="OYz-XS-oFD" customClass="TasksTableViewController" customModule="todo_anmol_c0777245" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="yex-Xd-cG7">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelectionDuringEditing="YES" allowsMultipleSelection="YES" allowsMultipleSelectionDuringEditing="YES" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="yex-Xd-cG7">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
@@ -112,7 +112,7 @@
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="Pm3-LW-dq2"/>
                         <barButtonItem enabled="NO" title="Item" image="tray.and.arrow.up" catalog="system" id="fd7-v9-vqY">
                             <connections>
-                                <segue destination="7qI-eX-PvJ" kind="presentation" id="LSd-Lq-ddZ"/>
+                                <segue destination="7qI-eX-PvJ" kind="presentation" identifier="movePerformSegue" id="LSd-Lq-ddZ"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="vPr-qQ-AM7"/>
@@ -148,7 +148,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="TH0-g5-ftt">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="moveToCategoriesCell" id="TH0-g5-ftt">
                                 <rect key="frame" x="0.0" y="28" width="414" height="43.5"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="TH0-g5-ftt" id="TE8-fz-mEc">
@@ -163,11 +163,19 @@
                         </connections>
                     </tableView>
                     <toolbarItems>
-                        <barButtonItem title="Cancel" id="vr3-DU-RYL"/>
+                        <barButtonItem title="Cancel" id="vr3-DU-RYL">
+                            <connections>
+                                <action selector="dismissViewController:" destination="7qI-eX-PvJ" id="g2I-Qz-tRH"/>
+                            </connections>
+                        </barButtonItem>
                     </toolbarItems>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <segue destination="Egr-l8-FeI" kind="unwind" identifier="dismissMoveView" unwindAction="unwindToTasksTableVC:" id="QEv-2g-v7p"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FgH-HW-Ymj" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <exit id="Egr-l8-FeI" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="2132" y="856"/>
         </scene>

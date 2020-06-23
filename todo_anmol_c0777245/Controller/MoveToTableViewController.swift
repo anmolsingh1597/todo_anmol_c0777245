@@ -7,9 +7,21 @@
 //
 
 import UIKit
+import CoreData
 
 class MoveToTableViewController: UITableViewController {
 
+    var categories = [Category]()
+    /// computed property
+    var selectedTasks: [Tasks]? {
+        didSet {
+            loadCategories()
+        }
+    }
+    
+    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+       
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -19,28 +31,68 @@ class MoveToTableViewController: UITableViewController {
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
+    
+      func loadCategories() {
+            
+        let request: NSFetchRequest<Category> = Category.fetchRequest()
+              
+    // predicate if you want
+              /*
+               write your code here
+               */
+              
+            do {
+                categories = try context.fetch(request)
+    //            print(folders.count)
+            } catch  {
+                print("Error fetching data of categories: \(error.localizedDescription)")
+            }
+        }
 
+    
+    @IBAction func dismissViewController(_ sender: UIBarButtonItem) {
+        dismiss(animated: true, completion: nil)
+    }
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
-        return 0
+        return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 0
+        return categories.count
     }
 
-    /*
+   
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "moveToCategoriesCell", for: indexPath)
 
-        // Configure the cell...
+        cell.textLabel?.text = categories[indexPath.row].categoryName
+               cell.backgroundColor = .darkGray
+               cell.textLabel?.textColor = .lightGray
+               cell.tintColor = .lightText
 
         return cell
     }
-    */
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let alert = UIAlertController(title: "Move to \(categories[indexPath.row].categoryName!)", message: "Are you sure", preferredStyle: .alert)
+               let yesAction = UIAlertAction(title: "Move", style: .default) { (action) in
+                   for task in self.selectedTasks! {
+                    task.parentCategory = self.categories[indexPath.row]
+                   }
+                   self.performSegue(withIdentifier: "dismissMoveView", sender: self)
+                   self.dismiss(animated: true, completion: nil)
+               }
+               
+               let noAction = UIAlertAction(title: "No", style: .cancel, handler: nil)
+               noAction.setValue(UIColor.orange, forKey: "titleTextColor")
+               alert.addAction(yesAction)
+               alert.addAction(noAction)
+               present(alert, animated: true, completion: nil)
+    }
 
     /*
     // Override to support conditional editing of the table view.
