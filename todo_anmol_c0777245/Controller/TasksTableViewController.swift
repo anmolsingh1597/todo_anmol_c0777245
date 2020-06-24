@@ -131,59 +131,6 @@ class TasksTableViewController: UITableViewController {
         moveToCategory.isEnabled = !moveToCategory.isEnabled
     }
     
-    
-    @IBAction func testNotifications(_ sender: UIBarButtonItem) {
-       
-        // fire test notification
-        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound], completionHandler: { success, error in
-            if success {
-            // schedule test
-//                self.scheduleNotifications()
-            }
-        else if error != nil {
-            print("error occurred")
-            }
-        })
-    }
-    
-
-    func scheduleNotifications() {
-        
-        let formatter = DateFormatter()
-            formatter.dateStyle = .medium
-            formatter.timeStyle = .short
-        
-        for task in tasks{
-           
-            let calendar = Calendar.current
-            let date1 = calendar.startOfDay(for: Date())
-            let date2 = calendar.startOfDay(for: task.dueDate!)
-            
-
-            let components = calendar.dateComponents([.day], from: date1, to: date2)
-           
-            
-            if components.day! == 1 {
-              
-                let content = UNMutableNotificationContent()
-                content.title = "Upcoming task: \(task.title ?? "No title")"
-                content.sound = .default
-                content.body = "Description: \(task.taskDescription ?? "No Description") \nDue Date: \(formatter.string(from: task.dueDate ?? Date()))"
-
-                let targetDate = Date().addingTimeInterval(10)
-                let trigger = UNCalendarNotificationTrigger(dateMatching: Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second],from: targetDate), repeats: true)
-//              let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
-                let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
-                UNUserNotificationCenter.current().add(request, withCompletionHandler: { error in
-                    if error != nil {
-                        print("Error while generating notification: \(error?.localizedDescription)")
-                    }
-                })
-            }
-        }
-    }
-
-   
 
     
     /*

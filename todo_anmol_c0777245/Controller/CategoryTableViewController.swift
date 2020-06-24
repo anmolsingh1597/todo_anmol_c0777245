@@ -28,7 +28,8 @@ class CategoryTableViewController: UITableViewController {
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
         
         print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
-        notificationsCall()
+        NotificationCenter.default.addObserver(self, selector: #selector(notificationsCall), name: UIApplication.willResignActiveNotification, object: nil)
+
         loadCategories()
         
     }
@@ -38,11 +39,11 @@ class CategoryTableViewController: UITableViewController {
     }
     
     //MARK: Notification centre
-    func notificationsCall() {
+   @objc func notificationsCall() {
         // fire test notification
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound], completionHandler: { success, error in
         if success {
-            // schedule test
+            // schedule 
             self.scheduleNotifications()
         }
         else if error != nil {
