@@ -200,7 +200,7 @@ class TasksTableViewController: UITableViewController {
         toolbar.sizeToFit()
         
         //bar button
-        let doneBtn = UIBarButtonItem(barButtonSystemItem: .done, target: nil, action: #selector(donePressed))
+        let doneBtn = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(donePressed))
         toolbar.setItems([doneBtn], animated: true)
         
         dueDateTextFiled.inputAccessoryView = toolbar
@@ -208,13 +208,15 @@ class TasksTableViewController: UITableViewController {
     }
     
     @objc func donePressed() {
-        print("Done bar utton")
+       
         let formatter = DateFormatter()
         formatter.dateStyle = .medium
         formatter.timeStyle = .medium
         
         dueDateTextFiled.text = formatter.string(from: datePicker.date)
-        self.view.endEditing(true)
+//        self.datePicker.endEditing(true)
+
+        self.dueDateTextFiled.endEditing(true)
     }
     
     @IBAction func addTask(_ sender: UIBarButtonItem) {
