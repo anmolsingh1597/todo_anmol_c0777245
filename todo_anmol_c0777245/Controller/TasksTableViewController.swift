@@ -155,7 +155,21 @@ class TasksTableViewController: UITableViewController {
         moveToCategory.isEnabled = !moveToCategory.isEnabled
     }
     
-
+    @IBAction func sortByButton(_ sender: UIBarButtonItem) {
+        let actionSheet = UIAlertController(title: "Sort By...", message: "", preferredStyle: .actionSheet)
+        let titleAction = UIAlertAction(title: "Title", style: .default) { (action) in
+            // sort by title
+            self.sortByTitle()
+        }
+        let dateAction = UIAlertAction(title: "Date", style: .default) { (action) in
+            //sort by date
+            self.sortByDate()
+        }
+        actionSheet.addAction(titleAction)
+        actionSheet.addAction(dateAction)
+        present(actionSheet, animated: true)
+    }
+    
     
     /*
     // Override to support rearranging the table view.
@@ -177,8 +191,6 @@ class TasksTableViewController: UITableViewController {
  
   let alert = UIAlertController(title: "Move to Archive", message: "Are you sure", preferredStyle: .alert)
         let yesAction = UIAlertAction(title: "Move", style: .default) { (action) in
-            
-          
             let newTask = Tasks(context: self.context)
             newTask.title = self.tasks[indexPath.row].title
             newTask.taskDescription = self.tasks[indexPath.row].taskDescription
@@ -186,12 +198,9 @@ class TasksTableViewController: UITableViewController {
             newTask.parentCategory = self.archivedCategory[0]
             self.deleteTask(task: self.tasks[indexPath.row])
             self.tasks.remove(at: indexPath.row)
-      
-//            self.tableView.reloadData()
+            self.tableView.deleteRows(at: [indexPath], with: .fade)
             self.saveTask()
             self.loadTasks()
-            
-      
         }
         
         let noAction = UIAlertAction(title: "No", style: .cancel, handler: nil)
@@ -227,25 +236,41 @@ class TasksTableViewController: UITableViewController {
          alert.addTextField { (field) in
              titleTextFiled = field
             titleTextFiled.text = self.tasks[indexPath.row].title
-//             titleTextFiled.placeholder = "Task Name"
-         }
+        }
          alert.addTextField { (field) in
                    taskDescriptionTextFiled = field
             taskDescriptionTextFiled.text = self.tasks[indexPath.row].taskDescription
-//                   taskDescriptionTextFiled.placeholder = "Task Description"
-               }
+        }
          alert.addTextField { (field) in
              self.dueDateTextFiled = field
-            
              self.dueDateTextFiled.placeholder = "Assign new due date"
              self.createDatePicker()
-               }
+        }
         
-               present(alert, animated: true, completion: nil)
+        present(alert, animated: true, completion: nil)
         
     }
 
-
+    func sortByTitle() {
+        loadTasks()
+    }
+    
+    func sortByDate() {
+        
+        let request: NSFetchRequest<Tasks> = Tasks.fetchRequest()
+            let categoryPredicate = NSPredicate(format: "parentCategory.categoryName=%@", selectedCategory!.categoryName!)
+            request.sortDescriptors = [NSSortDescriptor(key: "dueDate", ascending: true)]
+            request.predicate = categoryPredicate
+            
+            do {
+                tasks = try context.fetch(request)
+            } catch  {
+                print("Error loading tasks: \(error.localizedDescription)")
+            }
+        
+            tableView.reloadData()
+        
+    }
     
     //MARK: data manipulation core data
     

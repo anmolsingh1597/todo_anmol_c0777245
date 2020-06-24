@@ -133,7 +133,11 @@
                                     <action selector="editTasks:" destination="OYz-XS-oFD" id="i7l-dZ-hbt"/>
                                 </connections>
                             </barButtonItem>
-                            <barButtonItem title="Sort" id="8Ba-yC-z55"/>
+                            <barButtonItem title="Sort" id="8Ba-yC-z55">
+                                <connections>
+                                    <action selector="sortByButton:" destination="OYz-XS-oFD" id="tmb-OZ-Z8K"/>
+                                </connections>
+                            </barButtonItem>
                         </rightBarButtonItems>
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
