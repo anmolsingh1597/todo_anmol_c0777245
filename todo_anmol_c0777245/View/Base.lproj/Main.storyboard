@@ -127,11 +127,14 @@
                         </barButtonItem>
                     </toolbarItems>
                     <navigationItem key="navigationItem" title="Tasks" id="TCT-Y4-nvm">
-                        <barButtonItem key="rightBarButtonItem" title="Item" image="ellipsis" catalog="system" id="NDS-vc-dsy">
-                            <connections>
-                                <action selector="editTasks:" destination="OYz-XS-oFD" id="i7l-dZ-hbt"/>
-                            </connections>
-                        </barButtonItem>
+                        <rightBarButtonItems>
+                            <barButtonItem title="Item" image="ellipsis" catalog="system" id="NDS-vc-dsy">
+                                <connections>
+                                    <action selector="editTasks:" destination="OYz-XS-oFD" id="i7l-dZ-hbt"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem title="Sort" id="8Ba-yC-z55"/>
+                        </rightBarButtonItems>
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>

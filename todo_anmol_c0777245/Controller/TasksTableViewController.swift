@@ -99,6 +99,7 @@ class TasksTableViewController: UITableViewController {
         let actionSheet = UIAlertController(title: "Do you want to...", message: "", preferredStyle: .actionSheet)
         let editAction = UIAlertAction(title: "Edit", style: .default) { (alert) in
             // code for edit
+            self.editTaskValue(pathOfIndex: indexPath)
         }
         let archiveAction = UIAlertAction(title: "Move to Archive", style: .default) { (alert) in
             //code for move to archive
@@ -201,6 +202,48 @@ class TasksTableViewController: UITableViewController {
         
     }
 
+    //MARK: Edit task
+    func editTaskValue(pathOfIndex indexPath: IndexPath) {
+        var titleTextFiled = UITextField()
+        var taskDescriptionTextFiled = UITextField()
+        titleTextFiled.text = self.tasks[indexPath.row].title
+        taskDescriptionTextFiled.text = self.tasks[indexPath.row].taskDescription
+
+         let alert = UIAlertController(title: "Edit", message: "Edit your task", preferredStyle: UIAlertController.Style.alert)
+         let editAction = UIAlertAction(title: "Edit", style: .default) { (action) in
+          
+
+            self.deleteTask(task: self.tasks[indexPath.row])
+            self.tasks.remove(at: indexPath.row)
+            self.updateTask(with: titleTextFiled.text!, description: taskDescriptionTextFiled.text!, date: self.datePicker.date)
+         }
+         
+         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+               // change the font color of cancel
+               cancelAction.setValue(UIColor.orange, forKey: "titleTextColor")
+               
+         alert.addAction(editAction)
+         alert.addAction(cancelAction)
+         alert.addTextField { (field) in
+             titleTextFiled = field
+            titleTextFiled.text = self.tasks[indexPath.row].title
+//             titleTextFiled.placeholder = "Task Name"
+         }
+         alert.addTextField { (field) in
+                   taskDescriptionTextFiled = field
+            taskDescriptionTextFiled.text = self.tasks[indexPath.row].taskDescription
+//                   taskDescriptionTextFiled.placeholder = "Task Description"
+               }
+         alert.addTextField { (field) in
+             self.dueDateTextFiled = field
+            
+             self.dueDateTextFiled.placeholder = "Due Date"
+             self.createDatePicker()
+               }
+        
+               present(alert, animated: true, completion: nil)
+        
+    }
 
 
     
