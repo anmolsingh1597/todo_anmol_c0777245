@@ -237,7 +237,7 @@ class TasksTableViewController: UITableViewController {
          alert.addTextField { (field) in
              self.dueDateTextFiled = field
             
-             self.dueDateTextFiled.placeholder = "Due Date"
+             self.dueDateTextFiled.placeholder = "Assign new due date"
              self.createDatePicker()
                }
         
@@ -337,6 +337,8 @@ class TasksTableViewController: UITableViewController {
 
         self.dueDateTextFiled.endEditing(true)
     }
+    
+    //MARK: Add new task
     
     @IBAction func addTask(_ sender: UIBarButtonItem) {
         
