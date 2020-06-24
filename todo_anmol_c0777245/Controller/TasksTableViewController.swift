@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import UserNotifications
 
 class TasksTableViewController: UITableViewController {
 
@@ -66,7 +67,7 @@ class TasksTableViewController: UITableViewController {
         
         let formatter = DateFormatter()
                formatter.dateStyle = .medium
-               formatter.timeStyle = .medium
+               formatter.timeStyle = .short
         
         let task = tasks[indexPath.row]
         cell.textLabel?.text = task.title
@@ -129,6 +130,42 @@ class TasksTableViewController: UITableViewController {
         trashSelectedTasks.isEnabled = !trashSelectedTasks.isEnabled
         moveToCategory.isEnabled = !moveToCategory.isEnabled
     }
+    
+    
+    @IBAction func testNotifications(_ sender: UIBarButtonItem) {
+        print("Test Notifications")
+        // fire test notification
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound], completionHandler: { success, error in
+            if success {
+            // schedule test
+                self.scheduleTest()
+            }
+        else if error != nil {
+            print("error occurred")
+            }
+        })
+    }
+    
+
+    func scheduleTest() {
+        let content = UNMutableNotificationContent()
+        content.title = "Hello World"
+        content.sound = .default
+        content.body = "My long body. My long body. My long body. My long body. My long body. My long body. "
+
+        let targetDate = Date().addingTimeInterval(10)
+        let trigger = UNCalendarNotificationTrigger(dateMatching: Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second],from: targetDate), repeats: false)
+
+            let request = UNNotificationRequest(identifier: "some_long_id", content: content, trigger: trigger)
+            UNUserNotificationCenter.current().add(request, withCompletionHandler: { error in
+                if error != nil {
+                    print("something went wrong")
+                }
+            })
+        }
+
+   
+
     
     /*
     // Override to support rearranging the table view.
@@ -211,7 +248,7 @@ class TasksTableViewController: UITableViewController {
        
         let formatter = DateFormatter()
         formatter.dateStyle = .medium
-        formatter.timeStyle = .medium
+        formatter.timeStyle = .short
         
         dueDateTextFiled.text = formatter.string(from: datePicker.date)
 //        self.datePicker.endEditing(true)

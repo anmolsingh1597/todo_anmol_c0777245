@@ -123,6 +123,11 @@
                         </barButtonItem>
                     </toolbarItems>
                     <navigationItem key="navigationItem" title="Tasks" id="TCT-Y4-nvm">
+                        <barButtonItem key="leftBarButtonItem" title="Test" id="qe8-h7-8hX">
+                            <connections>
+                                <action selector="testNotifications:" destination="OYz-XS-oFD" id="sVu-bY-G6x"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="Item" image="ellipsis" catalog="system" id="NDS-vc-dsy">
                             <connections>
                                 <action selector="editTasks:" destination="OYz-XS-oFD" id="i7l-dZ-hbt"/>
