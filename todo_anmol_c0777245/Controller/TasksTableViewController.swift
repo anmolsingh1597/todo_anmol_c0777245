@@ -21,6 +21,10 @@ class TasksTableViewController: UITableViewController {
     
     var tasks = [Tasks]()
     
+    
+    var archivedCategory = [Category]()
+    
+   
     var selectedCategory: Category? {
         didSet{
             loadTasks()
@@ -43,6 +47,7 @@ class TasksTableViewController: UITableViewController {
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
+       loadArchiveCategory()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -81,13 +86,30 @@ class TasksTableViewController: UITableViewController {
             cell.backgroundColor = .red
         }
        
-        let backgroundView = UIView()
-        backgroundView.backgroundColor = .lightGray
-        cell.selectedBackgroundView = backgroundView
+//        let backgroundView = UIView()
+//        backgroundView.backgroundColor = .lightGray
+//        cell.selectedBackgroundView = backgroundView
 
         return cell
     }
     
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if editMode == false{
+        let actionSheet = UIAlertController(title: "Do you want to...", message: "", preferredStyle: .actionSheet)
+        let editAction = UIAlertAction(title: "Edit", style: .default) { (alert) in
+            // code for edit
+        }
+        let archiveAction = UIAlertAction(title: "Move to Archive", style: .default) { (alert) in
+            //code for move to archive
+            self.moveToArchive(pathOfIndex: indexPath)
+        }
+        
+        actionSheet.addAction(editAction)
+        actionSheet.addAction(archiveAction)
+        present(actionSheet, animated: true)
+    }
+}
 
    
     // Override to support conditional editing of the table view.
@@ -149,13 +171,63 @@ class TasksTableViewController: UITableViewController {
     }
     */
 
-    
+    //MARK: Move to archive
+    func moveToArchive(pathOfIndex indexPath: IndexPath) {
+ 
+  let alert = UIAlertController(title: "Move to Archive", message: "Are you sure", preferredStyle: .alert)
+        let yesAction = UIAlertAction(title: "Move", style: .default) { (action) in
+            
+          
+            let newTask = Tasks(context: self.context)
+            newTask.title = self.tasks[indexPath.row].title
+            newTask.taskDescription = self.tasks[indexPath.row].taskDescription
+            newTask.dueDate = self.tasks[indexPath.row].dueDate
+            newTask.parentCategory = self.archivedCategory[0]
+            self.deleteTask(task: self.tasks[indexPath.row])
+            self.tasks.remove(at: indexPath.row)
+      
+//            self.tableView.reloadData()
+            self.saveTask()
+            self.loadTasks()
+            
+      
+        }
+        
+        let noAction = UIAlertAction(title: "No", style: .cancel, handler: nil)
+        noAction.setValue(UIColor.orange, forKey: "titleTextColor")
+        alert.addAction(yesAction)
+        alert.addAction(noAction)
+        present(alert, animated: true, completion: nil)
+        
+    }
+
+
+
     
     //MARK: data manipulation core data
+    
+    //MARK: load archive category
+    func loadArchiveCategory() {
+        
+               let request: NSFetchRequest<Category> = Category.fetchRequest()
+                             
+               // predicate if you want
+               let categoryPredicate = NSPredicate(format: "categoryName MATCHES %@", "Archive")
+                   request.predicate = categoryPredicate
+                             
+               do {
+                           archivedCategory = try context.fetch(request)
+                   //            print(folders.count)
+               } catch  {
+                       print("Error fetching data of categories: \(error.localizedDescription)")
+                   }
+                  
+    }
     
     //MARK: load tasks
     
     func loadTasks(){
+        
         let request: NSFetchRequest<Tasks> = Tasks.fetchRequest()
         let categoryPredicate = NSPredicate(format: "parentCategory.categoryName=%@", selectedCategory!.categoryName!)
         request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]

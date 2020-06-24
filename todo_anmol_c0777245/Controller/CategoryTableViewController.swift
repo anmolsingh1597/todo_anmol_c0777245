@@ -171,6 +171,8 @@ class CategoryTableViewController: UITableViewController {
     
     func loadCategories() {
         let request: NSFetchRequest<Category> = Category.fetchRequest()
+        let categoryPredicate = NSPredicate(format: "NOT categoryName MATCHES %@", "Archive")
+            request.predicate = categoryPredicate
         
         do {
             categories = try context.fetch(request)
@@ -240,8 +242,9 @@ class CategoryTableViewController: UITableViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
-        let destination = segue.destination as! TasksTableViewController
         if let indexPath = tableView.indexPathForSelectedRow{
+            let destination = segue.destination as! TasksTableViewController
+
             destination.selectedCategory = categories[indexPath.row]
         }
     }

@@ -17,6 +17,7 @@
 		8ED4671424A284070055E560 /* TasksTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ED4671324A284070055E560 /* TasksTableViewController.swift */; };
 		8ED4671624A286840055E560 /* MoveToTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ED4671524A286840055E560 /* MoveToTableViewController.swift */; };
 		8ED4671924A29A660055E560 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ED4671824A29A660055E560 /* Date+Extension.swift */; };
+		8ED4671B24A3C84C0055E560 /* ArchiveTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ED4671A24A3C84C0055E560 /* ArchiveTableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,7 @@
 		8ED4671324A284070055E560 /* TasksTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksTableViewController.swift; sourceTree = "<group>"; };
 		8ED4671524A286840055E560 /* MoveToTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveToTableViewController.swift; sourceTree = "<group>"; };
 		8ED4671824A29A660055E560 /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
+		8ED4671A24A3C84C0055E560 /* ArchiveTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArchiveTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,6 +85,7 @@
 				8ED4671124A281850055E560 /* CategoryTableViewController.swift */,
 				8ED4671324A284070055E560 /* TasksTableViewController.swift */,
 				8ED4671524A286840055E560 /* MoveToTableViewController.swift */,
+				8ED4671A24A3C84C0055E560 /* ArchiveTableViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -182,6 +185,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8ED4671B24A3C84C0055E560 /* ArchiveTableViewController.swift in Sources */,
 				8ED4670224A280530055E560 /* todo_anmol_c0777245.xcdatamodeld in Sources */,
 				8ED4671624A286840055E560 /* MoveToTableViewController.swift in Sources */,
 				8ED4671424A284070055E560 /* TasksTableViewController.swift in Sources */,
