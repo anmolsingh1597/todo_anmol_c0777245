@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import UserNotifications
 
 class CategoryTableViewController: UITableViewController {
     
@@ -27,6 +28,7 @@ class CategoryTableViewController: UITableViewController {
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
         
         print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
+        notificationsCall()
         loadCategories()
         
     }
@@ -34,6 +36,74 @@ class CategoryTableViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         tableView.reloadData()
     }
+    
+    //MARK: Notification centre
+    func notificationsCall() {
+        // fire test notification
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound], completionHandler: { success, error in
+        if success {
+            // schedule test
+            self.scheduleNotifications()
+        }
+        else if error != nil {
+            print("error occurred")
+            }
+        })
+    }
+    
+
+        func scheduleNotifications() {
+            
+            var tasks = [Tasks]()
+            let request: NSFetchRequest<Tasks> = Tasks.fetchRequest()
+            
+            do {
+                tasks = try context.fetch(request)
+            } catch  {
+                print("Error loading tasks: \(error.localizedDescription)")
+            }
+            
+            let formatter = DateFormatter()
+                formatter.dateStyle = .medium
+                formatter.timeStyle = .short
+            
+            for task in tasks{
+               
+                let calendar = Calendar.current
+                let date1 = calendar.startOfDay(for: Date())
+                let date2 = calendar.startOfDay(for: task.dueDate!)
+                
+
+                let components = calendar.dateComponents([.day], from: date1, to: date2)
+               
+                
+                if components.day! == 1 {
+                  
+                    let content = UNMutableNotificationContent()
+                    content.title = "Upcoming task: \(task.title ?? "No title")"
+                    content.sound = .default
+                    content.body = "Description: \(task.taskDescription ?? "No Description") \nDue Date: \(formatter.string(from: task.dueDate ?? Date()))"
+
+//                    let targetDate = Date().addingTimeInterval(10)
+                    var dateComponents = DateComponents()
+                    dateComponents.hour = calendar.component(.hour, from: task.dueDate!)
+                    dateComponents.minute = calendar.component(.minute, from: task.dueDate!)
+                    print(dateComponents)
+                    let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
+    //              let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
+                    let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+                    UNUserNotificationCenter.current().add(request, withCompletionHandler: { error in
+                        if error != nil {
+                            print("Error while generating notification: \(error?.localizedDescription)")
+                        }
+                    })
+                }
+            }
+        }
+
+       
+
+    
 
     // MARK: - Table view data source
 

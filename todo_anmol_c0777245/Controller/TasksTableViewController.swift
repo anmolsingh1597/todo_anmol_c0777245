@@ -133,12 +133,12 @@ class TasksTableViewController: UITableViewController {
     
     
     @IBAction func testNotifications(_ sender: UIBarButtonItem) {
-        print("Test Notifications")
+       
         // fire test notification
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound], completionHandler: { success, error in
             if success {
             // schedule test
-                self.scheduleNotifications()
+//                self.scheduleNotifications()
             }
         else if error != nil {
             print("error occurred")
@@ -181,8 +181,7 @@ class TasksTableViewController: UITableViewController {
                 })
             }
         }
-        
-        }
+    }
 
    
 
