@@ -138,7 +138,7 @@ class TasksTableViewController: UITableViewController {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound], completionHandler: { success, error in
             if success {
             // schedule test
-                self.scheduleTest()
+                self.scheduleNotifications()
             }
         else if error != nil {
             print("error occurred")
@@ -147,53 +147,41 @@ class TasksTableViewController: UITableViewController {
     }
     
 
-    func scheduleTest() {
+    func scheduleNotifications() {
+        
+        let formatter = DateFormatter()
+            formatter.dateStyle = .medium
+            formatter.timeStyle = .short
         
         for task in tasks{
-            print("Task Date: \(task.dueDate!)")
+           
             let calendar = Calendar.current
             let date1 = calendar.startOfDay(for: Date())
             let date2 = calendar.startOfDay(for: task.dueDate!)
             
 
             let components = calendar.dateComponents([.day], from: date1, to: date2)
-            print("No of days: \(components.day!)")
+           
             
-            if components.day! == 1{
+            if components.day! == 1 {
+              
                 let content = UNMutableNotificationContent()
                 content.title = "Upcoming task: \(task.title ?? "No title")"
                 content.sound = .default
-                content.body = "Description: \(task.taskDescription ?? "No Description") \nDue Date: \(task.dueDate ?? Date())"
+                content.body = "Description: \(task.taskDescription ?? "No Description") \nDue Date: \(formatter.string(from: task.dueDate ?? Date()))"
 
                 let targetDate = Date().addingTimeInterval(10)
-                let trigger = UNCalendarNotificationTrigger(dateMatching: Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second],from: targetDate), repeats: false)
-
-                let request = UNNotificationRequest(identifier: "deviceID", content: content, trigger: trigger)
+                let trigger = UNCalendarNotificationTrigger(dateMatching: Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second],from: targetDate), repeats: true)
+//              let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
+                let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
                 UNUserNotificationCenter.current().add(request, withCompletionHandler: { error in
                     if error != nil {
-                        print("something went wrong")
+                        print("Error while generating notification: \(error?.localizedDescription)")
                     }
                 })
             }
         }
-        print("Current date: \(Date())")
-      /*
-        let content = UNMutableNotificationContent()
-        content.title = "Hello World"
-        content.sound = .default
-        content.body = "My long body. My long body. My long body. My long body. My long body. My long body. "
-
-        let targetDate = Date().addingTimeInterval(10)
-        let trigger = UNCalendarNotificationTrigger(dateMatching: Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second],from: targetDate), repeats: false)
-
-            let request = UNNotificationRequest(identifier: "deviceID", content: content, trigger: trigger)
-            UNUserNotificationCenter.current().add(request, withCompletionHandler: { error in
-                if error != nil {
-                    print("something went wrong")
-                }
-            })
- 
- */
+        
         }
 
    
