@@ -81,7 +81,7 @@ class TasksTableViewController: UITableViewController {
         }
        
         let backgroundView = UIView()
-        backgroundView.backgroundColor = .green
+        backgroundView.backgroundColor = .lightGray
         cell.selectedBackgroundView = backgroundView
 
         return cell
@@ -148,6 +148,36 @@ class TasksTableViewController: UITableViewController {
     
 
     func scheduleTest() {
+        
+        for task in tasks{
+            print("Task Date: \(task.dueDate!)")
+            let calendar = Calendar.current
+            let date1 = calendar.startOfDay(for: Date())
+            let date2 = calendar.startOfDay(for: task.dueDate!)
+            
+
+            let components = calendar.dateComponents([.day], from: date1, to: date2)
+            print("No of days: \(components.day!)")
+            
+            if components.day! == 1{
+                let content = UNMutableNotificationContent()
+                content.title = "Upcoming task: \(task.title ?? "No title")"
+                content.sound = .default
+                content.body = "Description: \(task.taskDescription ?? "No Description") \nDue Date: \(task.dueDate ?? Date())"
+
+                let targetDate = Date().addingTimeInterval(10)
+                let trigger = UNCalendarNotificationTrigger(dateMatching: Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second],from: targetDate), repeats: false)
+
+                let request = UNNotificationRequest(identifier: "deviceID", content: content, trigger: trigger)
+                UNUserNotificationCenter.current().add(request, withCompletionHandler: { error in
+                    if error != nil {
+                        print("something went wrong")
+                    }
+                })
+            }
+        }
+        print("Current date: \(Date())")
+      /*
         let content = UNMutableNotificationContent()
         content.title = "Hello World"
         content.sound = .default
@@ -156,12 +186,14 @@ class TasksTableViewController: UITableViewController {
         let targetDate = Date().addingTimeInterval(10)
         let trigger = UNCalendarNotificationTrigger(dateMatching: Calendar.current.dateComponents([.year, .month, .day, .hour, .minute, .second],from: targetDate), repeats: false)
 
-            let request = UNNotificationRequest(identifier: "some_long_id", content: content, trigger: trigger)
+            let request = UNNotificationRequest(identifier: "deviceID", content: content, trigger: trigger)
             UNUserNotificationCenter.current().add(request, withCompletionHandler: { error in
                 if error != nil {
                     print("something went wrong")
                 }
             })
+ 
+ */
         }
 
    
