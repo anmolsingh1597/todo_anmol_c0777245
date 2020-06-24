@@ -15,6 +15,9 @@ class CategoryTableViewController: UITableViewController {
     //array of categories imported from core data
     var categories = [Category]()
     
+    //archived category
+    var archivedCategory = [Category]()
+    
     // create a context at global level so that it can be accessed
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 
@@ -28,9 +31,10 @@ class CategoryTableViewController: UITableViewController {
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
         
         print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
-        NotificationCenter.default.addObserver(self, selector: #selector(notificationsCall), name: UIApplication.willResignActiveNotification, object: nil)
-
+//        NotificationCenter.default.addObserver(self, selector: #selector(notificationsCall), name: UIApplication.willResignActiveNotification, object: nil)
+        notificationsCall()
         loadCategories()
+        generateArchiveCategory()
         
     }
     
@@ -39,12 +43,12 @@ class CategoryTableViewController: UITableViewController {
     }
     
     //MARK: Notification centre
-   @objc func notificationsCall() {
+ func notificationsCall() {
         // fire test notification
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound], completionHandler: { success, error in
         if success {
             // schedule 
-            self.scheduleNotifications()
+            NotificationCenter.default.addObserver(self, selector: #selector(self.scheduleNotifications), name: UIApplication.willResignActiveNotification, object: nil)
         }
         else if error != nil {
             print("error occurred")
@@ -53,7 +57,7 @@ class CategoryTableViewController: UITableViewController {
     }
     
 
-        func scheduleNotifications() {
+        @objc func scheduleNotifications() {
             
             var tasks = [Tasks]()
             let request: NSFetchRequest<Tasks> = Tasks.fetchRequest()
@@ -169,6 +173,27 @@ class CategoryTableViewController: UITableViewController {
 
     //MARK: Core Data functions
     
+    func generateArchiveCategory() {
+        let request: NSFetchRequest<Category> = Category.fetchRequest()
+        
+        do {
+            archivedCategory = try context.fetch(request)
+        } catch {
+            print("Error while loading categories: \(error.localizedDescription)")
+        }
+        
+        let archivedName = self.archivedCategory.map{$0.categoryName}
+            guard !archivedName.contains("Archive") else {
+                    return
+                }
+        let newCategory = Category(context: self.context)
+                          
+            newCategory.categoryName = "Archive"
+            self.archivedCategory.append(newCategory)
+            self.saveCategories()
+    }
+    
+    //MARK: load categories
     func loadCategories() {
         let request: NSFetchRequest<Category> = Category.fetchRequest()
         let categoryPredicate = NSPredicate(format: "NOT categoryName MATCHES %@", "Archive")
@@ -182,6 +207,7 @@ class CategoryTableViewController: UITableViewController {
         
     }
     
+    //MARK: save categories
     func saveCategories() {
         
         do {
@@ -193,10 +219,12 @@ class CategoryTableViewController: UITableViewController {
         
     }
     
+    //MARK: delete categories
     func deleteCategories() {
         
     }
     
+    //MARK: add new categories
     @IBAction func addNewCategory(_ sender: UIBarButtonItem) {
         var textField = UITextField()
         
