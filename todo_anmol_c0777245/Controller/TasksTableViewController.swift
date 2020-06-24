@@ -74,6 +74,7 @@ class TasksTableViewController: UITableViewController {
         cell.detailTextLabel?.text = formatter.string(from: task.dueDate ?? Date())
         cell.textLabel?.textColor = .white
         cell.detailTextLabel?.textColor = .white
+        cell.imageView?.image = UIImage(systemName: "doc")
         if task.dueDate! >= Date(){
             cell.backgroundColor = .green
         }else{

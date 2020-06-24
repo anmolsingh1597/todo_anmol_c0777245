@@ -89,7 +89,7 @@ class CategoryTableViewController: UITableViewController {
                     var dateComponents = DateComponents()
                     dateComponents.hour = calendar.component(.hour, from: task.dueDate!)
                     dateComponents.minute = calendar.component(.minute, from: task.dueDate!)
-                    print(dateComponents)
+                   
                     let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
     //              let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
                     let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
