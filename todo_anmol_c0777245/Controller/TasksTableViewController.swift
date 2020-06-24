@@ -64,11 +64,21 @@ class TasksTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "tasksCell", for: indexPath)
         
+        let formatter = DateFormatter()
+               formatter.dateStyle = .medium
+               formatter.timeStyle = .medium
+        
         let task = tasks[indexPath.row]
         cell.textLabel?.text = task.title
-        cell.detailTextLabel?.text = task.taskDescription
-        cell.textLabel?.textColor = .darkGray
-        cell.detailTextLabel?.textColor = .darkGray
+        cell.detailTextLabel?.text = formatter.string(from: task.dueDate ?? Date())
+        cell.textLabel?.textColor = .white
+        cell.detailTextLabel?.textColor = .white
+        if task.dueDate! >= Date(){
+            cell.backgroundColor = .green
+        }else{
+            cell.backgroundColor = .red
+        }
+       
         let backgroundView = UIView()
         backgroundView.backgroundColor = .green
         cell.selectedBackgroundView = backgroundView
@@ -190,14 +200,14 @@ class TasksTableViewController: UITableViewController {
         toolbar.sizeToFit()
         
         //bar button
-        let doneBtn = UIBarButtonItem(barButtonSystemItem: .done, target: nil, action: #selector(doneBarBtn))
+        let doneBtn = UIBarButtonItem(barButtonSystemItem: .done, target: nil, action: #selector(donePressed))
         toolbar.setItems([doneBtn], animated: true)
         
         dueDateTextFiled.inputAccessoryView = toolbar
         dueDateTextFiled.inputView = datePicker
     }
     
-    @objc func doneBarBtn() {
+    @objc func donePressed() {
         print("Done bar utton")
         let formatter = DateFormatter()
         formatter.dateStyle = .medium
@@ -221,7 +231,7 @@ class TasksTableViewController: UITableViewController {
                 return self.showAlert()
             }
 
-            self.updateTask(with: titleTextFiled.text!, description: taskDescriptionTextFiled.text!, date: Date())
+            self.updateTask(with: titleTextFiled.text!, description: taskDescriptionTextFiled.text!, date: self.datePicker.date)
         }
         
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
