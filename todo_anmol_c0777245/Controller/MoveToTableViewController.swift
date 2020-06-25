@@ -71,11 +71,7 @@ class MoveToTableViewController: UITableViewController {
    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "moveToCategoriesCell", for: indexPath)
-
         cell.textLabel?.text = categories[indexPath.row].categoryName
-               cell.textLabel?.textColor = .lightGray
-               cell.tintColor = .lightText
-
         return cell
     }
     
