@@ -33,6 +33,9 @@ class TasksTableViewController: UITableViewController {
     
     var editMode: Bool = false
     
+    //UI search bar
+    let searchController = UISearchController()
+    
     // create context
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
@@ -47,7 +50,8 @@ class TasksTableViewController: UITableViewController {
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
-       loadArchiveCategory()
+        loadArchiveCategory()
+        toDoSearchBar()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -294,12 +298,19 @@ class TasksTableViewController: UITableViewController {
     
     //MARK: load tasks
     
-    func loadTasks(){
+    func loadTasks(with predicate: NSPredicate? = nil){
         
         let request: NSFetchRequest<Tasks> = Tasks.fetchRequest()
         let categoryPredicate = NSPredicate(format: "parentCategory.categoryName=%@", selectedCategory!.categoryName!)
         request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
-        request.predicate = categoryPredicate
+//        request.predicate = categoryPredicate
+        
+        
+        if let additionalPredicate = predicate{
+            request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [categoryPredicate, additionalPredicate])
+        } else {
+            request.predicate = categoryPredicate
+        }
         
         do {
             tasks = try context.fetch(request)
@@ -451,4 +462,38 @@ class TasksTableViewController: UITableViewController {
         tableView.setEditing(false, animated: false)
     }
 
+    func toDoSearchBar(){
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "Search Notes"
+        searchController.searchBar.scopeButtonTitles = ["Title", "Description"]
+        navigationItem.searchController = searchController
+        searchController.searchBar.delegate = self
+        definesPresentationContext = true
+       
+
+       }
+    
+}
+
+extension TasksTableViewController: UISearchBarDelegate, UISearchDisplayDelegate{
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+       }
+       
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchText != ""{
+            if searchController.searchBar.selectedScopeButtonIndex == 0{
+                var titlePredicate: NSPredicate = NSPredicate()
+                titlePredicate = NSPredicate(format: "title CONTAINS[cd] '\(searchText)'")
+                loadTasks(with: titlePredicate)
+            }else if searchController.searchBar.selectedScopeButtonIndex == 1 {
+                var descriptionPredicate: NSPredicate = NSPredicate()
+                descriptionPredicate = NSPredicate(format: "taskDescription CONTAINS[cd] '\(searchText)'")
+                loadTasks(with: descriptionPredicate)
+            }
+           
+        }
+        else{
+            loadTasks()
+        }
+    }
 }
