@@ -469,8 +469,6 @@ class TasksTableViewController: UITableViewController {
         navigationItem.searchController = searchController
         searchController.searchBar.delegate = self
         definesPresentationContext = true
-       
-
        }
     
 }

@@ -1,11 +1,13 @@
 {
   "images" : [
     {
+      "filename" : "rsz_1reminder.png",
       "idiom" : "iphone",
       "scale" : "2x",
       "size" : "20x20"
     },
     {
+      "filename" : "rsz_reminder.png",
       "idiom" : "iphone",
       "scale" : "3x",
       "size" : "20x20"
@@ -31,11 +33,13 @@
       "size" : "40x40"
     },
     {
+      "filename" : "rsz_1rsz_reminder-2.png",
       "idiom" : "iphone",
       "scale" : "2x",
       "size" : "60x60"
     },
     {
+      "filename" : "rsz_reminder-2.png",
       "idiom" : "iphone",
       "scale" : "3x",
       "size" : "60x60"
